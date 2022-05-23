@@ -1,0 +1,30 @@
+{
+  "name": "modal-discord",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn tsc",
+    "lint": "yarn eslint 'src/**/*.{ts,js}'",
+    "start": "yarn build && NODE_ENV=development node build/index.js",
+    "start:docker": "node build/index.js",
+    "deploy-commands": "yarn build && NODE_ENV=development node build/discord/deploy-commands.js"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.13.0",
+    "@discordjs/rest": "^0.4.1",
+    "discord-api-types": "^0.33.0",
+    "discord.js": "^13.7.0",
+    "dotenv": "^16.0.1",
+    "sqlite3": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/sqlite3": "^3.1.8",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "typescript": "^4.6.4"
+  }
+}

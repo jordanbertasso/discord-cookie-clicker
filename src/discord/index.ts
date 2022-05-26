@@ -4,11 +4,10 @@ import {
   Intents,
   Permissions,
   CommandInteraction,
-  ButtonInteraction,
 } from 'discord.js';
 import pingCommand from './commands/ping';
-import setupButton from './commands/setupButton';
-import { addCookie, getUserCookies } from '../db';
+import setupButton, { NON_EPHEMERAL_COOKIE_ID } from './commands/setupButton';
+import { addCookie } from '../db';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import me from './commands/me';
 import cookieJar from './commands/cookie-jar';
@@ -78,15 +77,16 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-// Handle button click interactions
-// (This only handles buttons created before the recent changes for backwards compatability)
+// Handle non ephemeral button click interactions
 client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isButton()) return;
-  if ((interaction as ButtonInteraction).customId !== "primary") return;
+  if (
+    !interaction.isButton() ||
+    interaction.customId !== NON_EPHEMERAL_COOKIE_ID
+  ) {
+    return;
+  }
 
-  await addCookie(interaction.user.id);
-
-  const count = await getUserCookies(interaction.user.id);
+  const count = await addCookie(interaction.user.id);
 
   await interaction
     .reply({ content: count.toString(), ephemeral: true })

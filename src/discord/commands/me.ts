@@ -8,6 +8,8 @@ export default {
   async execute(interaction: CommandInteraction) {
     const count = await getUserCookies(interaction.user.id);
 
-    await interaction.reply(`You have ${count} cookies.`).catch(console.error);
+    await interaction
+      .reply(`You have ${count} cookie${count === 1 ? '' : 's'}.`)
+      .catch(console.error);
   },
 };

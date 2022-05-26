@@ -34,7 +34,7 @@ export const getUserCookies = (discordId: string) => {
 };
 
 export const addCookie = (discordId: string) => {
-  return new Promise<void>((resolve) => {
+  return new Promise<number>((resolve) => {
     db.serialize(() => {
       db.get(
         'SELECT clicks FROM users WHERE discordId = (?)',
@@ -42,14 +42,16 @@ export const addCookie = (discordId: string) => {
         (err, row) => {
           if (!row) {
             const stmt = db.prepare('INSERT INTO users VALUES (?, ?)');
-            stmt.run(discordId, 1);
-            stmt.finalize(() => resolve());
+            const newCookies = 1;
+            stmt.run(discordId, newCookies);
+            stmt.finalize(() => resolve(newCookies));
           } else {
             const stmt = db.prepare(
               'UPDATE users SET clicks = (?) WHERE discordId = (?)',
             );
-            stmt.run(row.clicks + 1, discordId);
-            stmt.finalize(() => resolve());
+            const newCookies = row.clicks + 1;
+            stmt.run(newCookies, discordId);
+            stmt.finalize(() => resolve(newCookies));
           }
         },
       );

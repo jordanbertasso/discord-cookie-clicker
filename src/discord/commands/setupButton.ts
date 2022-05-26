@@ -30,13 +30,13 @@ export default {
     const collector = msg.createMessageComponentCollector({
       filter: i => i.customId === button.customId && i.user.id === interaction.user.id,
       componentType: "BUTTON",
-      time: 10 * 60 * 1000 // 10 minutes
+      time: 15 * 60 * 1000 // 15 minutes
     });
 
     collector.on("collect", async i => {
       try {
         await addCookie(interaction.user.id);
-        count++;
+        count = await getUserCookies(interaction.user.id);
 
         await i.update({
           content: `${count}`,

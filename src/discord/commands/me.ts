@@ -8,6 +8,6 @@ export default {
   async execute(interaction: CommandInteraction) {
     const count = await getUserCookies(interaction.user.id);
 
-    await interaction.reply(count.toString()).catch(console.error);
+    await interaction.reply(`You have ${count} cookies.`).catch(console.error);
   },
 };

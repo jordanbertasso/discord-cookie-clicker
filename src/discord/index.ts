@@ -4,6 +4,7 @@ import {
   Intents,
   Permissions,
   CommandInteraction,
+  ButtonInteraction,
 } from 'discord.js';
 import pingCommand from './commands/ping';
 import setupButton from './commands/setupButton';
@@ -78,8 +79,10 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // Handle button click interactions
+// (This only handles buttons created before the recent changes for backwards compatability)
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isButton()) return;
+  if ((interaction as ButtonInteraction).customId !== "primary") return;
 
   await addCookie(interaction.user.id);
 
